@@ -1,0 +1,535 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web:200,200i,300,300i,400,400i,600,600i,700,700i,900');
+
+/* VARS */
+:root {
+  --circle-width: 0.09em;
+  --circle-width-hover: 0.07em;
+
+  /* colors default */
+  --primary-color: #000000; /* black */
+  --secondary-color: #dfe8ed; /* gray background */
+  --bg-color: #ffffff; /* white background */
+
+  /* colors customized */
+  --primary-color-blue: #30bae7;
+  --primary-color-green: #15c7a8;
+  --primary-color-orange: #eb7d4b;
+  --primary-color-pink: #d74680;
+  --primary-color-span: #3c4761;
+}
+
+/* CIRCLE */
+/* classes to extend */
+.rect-auto {
+  clip: rect(auto, auto, auto, auto);
+}
+
+.pie {
+  position: absolute;
+  border: var(--circle-width) solid var(--primary-color);
+  width: calc(1em - 2 * var(--circle-width));
+  height: calc(1em - 2 * var(--circle-width));
+  clip: rect(0em, 0.5em, 1em, 0em);
+  border-radius: 50%;
+  transform: rotate(0deg);
+}
+
+.pie-fill {
+  transform: rotate(180deg);
+}
+
+.wrapper {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+/* main */
+.c100 {
+  position: relative;
+  font-size: 85px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  float: left;
+  margin: 0.4em;
+  background-color: #BAE7B6;
+
+  /* centered value inside circle */
+  > span {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 5em;
+    line-height: 5em;
+    font-size: 0.2em;
+    color: #BAE7B6;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s ease-out;
+  }
+
+  /* background inside the circle */
+  &:after {
+    position: absolute;
+    top: var(--circle-width);
+    left: var(--circle-width);
+    display: block;
+    content: " ";
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    transition: all 0.2s ease-in;
+  }
+
+  /* the slice (mask) */
+  .slice {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    clip: rect(0em, 1em, 1em, 0.5em);
+  }
+
+  /* circle to show the status */
+  .bar {
+    position: absolute;
+    border: var(--circle-width) solid var(--primary-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    clip: rect(0em, 0.5em, 1em, 0em);
+    border-radius: 50%;
+    transform: rotate(0deg);
+  }
+
+  /* loop to create all needed elements automatically */
+  /* This can be done with a CSS preprocessor or a script to generate the classes */
+  /* For simplicity, this example only shows the first few */
+  &.p51 .slice,
+  &.p52 .slice,
+  /* ... add more as needed ... */
+  &.p100 .slice {
+    clip: rect(auto, auto, auto, auto);
+  }
+
+  &.p51 .bar:after,
+  &.p52 .bar:after,
+  /* ... add more as needed ... */
+  &.p100 .bar:after {
+    transform: rotate(180deg);
+  }
+
+  &.p51 .fill,
+  &.p52 .fill,
+  /* ... add more as needed ... */
+  &.p100 .fill {
+    position: absolute;
+    border: var(--circle-width) solid var(--primary-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    clip: rect(0em, 0.5em, 1em, 0em);
+    border-radius: 50%;
+    transform: rotate(180deg);
+  }
+
+  &.p1 .bar {
+    transform: rotate(calc(360 / 100 * 1));
+  }
+
+  &.p2 .bar {
+    transform: rotate(calc(360 / 100 * 2));
+  }
+
+  /* ... add more as needed ... */
+
+  &.p100 .bar {
+    transform: rotate(calc(360 / 100 * 100));
+  }
+
+  /* hover styles */
+  &:hover {
+    cursor: default;
+
+    > span {
+      width: 3.33em;
+      line-height: 3.33em;
+      font-size: 0.3em;
+      color: var(--primary-color-span);
+    }
+
+    &:after {
+      top: var(--circle-width-hover);
+      left: var(--circle-width-hover);
+      width: calc(1em - 2 * var(--circle-width-hover));
+      height: calc(1em - 2 * var(--circle-width-hover));
+    }
+  }
+
+  /* blue */
+  &.blue .bar,
+  &.blue .fill {
+    border-color: var(--primary-color-blue) !important;
+  }
+
+  &.blue:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* pink skin */
+  &.pink .bar,
+  &.pink .fill {
+    border-color: var(--primary-color-pink) !important;
+  }
+
+  &.pink:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* green skin */
+  &.green .bar,
+  &.green .fill {
+    border-color: var(--primary-color-green) !important;
+  }
+
+  &.green:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* orange skin */
+  &.orange .bar,
+  &.orange .fill {
+    border-color: var(--primary-color-orange) !important;
+  }
+
+  &.orange:hover > span {
+    color: var(--primary-color-span);
+  }
+}
+.c101 {
+  position: relative;
+  font-size: 85px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  float: left;
+  margin: 0.4em;
+  background-color: #5E5498;
+
+  /* centered value inside circle */
+  > span {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 5em;
+    line-height: 5em;
+    font-size: 0.2em;
+    color: #5E5498;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s ease-out;
+  }
+
+  /* background inside the circle */
+  &:after {
+    position: absolute;
+    top: var(--circle-width);
+    left: var(--circle-width);
+    display: block;
+    content: " ";
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    transition: all 0.2s ease-in;
+  }
+
+  /* the slice (mask) */
+  .slice {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    clip: rect(0em, 1em, 1em, 0.5em);
+  }
+
+  /* circle to show the status */
+  .bar {
+    position: absolute;
+    border: var(--circle-width) solid var(--primary-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    clip: rect(0em, 0.5em, 1em, 0em);
+    border-radius: 50%;
+    transform: rotate(0deg);
+  }
+
+  /* loop to create all needed elements automatically */
+  /* This can be done with a CSS preprocessor or a script to generate the classes */
+  /* For simplicity, this example only shows the first few */
+  &.p51 .slice,
+  &.p52 .slice,
+  /* ... add more as needed ... */
+  &.p100 .slice {
+    clip: rect(auto, auto, auto, auto);
+  }
+
+  &.p51 .bar:after,
+  &.p52 .bar:after,
+  /* ... add more as needed ... */
+  &.p100 .bar:after {
+    transform: rotate(180deg);
+  }
+
+  &.p51 .fill,
+  &.p52 .fill,
+  /* ... add more as needed ... */
+  &.p100 .fill {
+    position: absolute;
+    border: var(--circle-width) solid var(--primary-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    clip: rect(0em, 0.5em, 1em, 0em);
+    border-radius: 50%;
+    transform: rotate(180deg);
+  }
+
+  &.p1 .bar {
+    transform: rotate(calc(360 / 100 * 1));
+  }
+
+  &.p2 .bar {
+    transform: rotate(calc(360 / 100 * 2));
+  }
+
+  /* ... add more as needed ... */
+
+  &.p100 .bar {
+    transform: rotate(calc(360 / 100 * 100));
+  }
+
+  /* hover styles */
+  &:hover {
+    cursor: default;
+
+    > span {
+      width: 3.33em;
+      line-height: 3.33em;
+      font-size: 0.3em;
+      color: #5E5498;
+    }
+
+    &:after {
+      top: var(--circle-width-hover);
+      left: var(--circle-width-hover);
+      width: calc(1em - 2 * var(--circle-width-hover));
+      height: calc(1em - 2 * var(--circle-width-hover));
+    }
+  }
+
+  /* blue */
+  &.blue .bar,
+  &.blue .fill {
+    border-color: var(--primary-color-blue) !important;
+  }
+
+  &.blue:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* pink skin */
+  &.pink .bar,
+  &.pink .fill {
+    border-color: var(--primary-color-pink) !important;
+  }
+
+  &.pink:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* green skin */
+  &.green .bar,
+  &.green .fill {
+    border-color: var(--primary-color-green) !important;
+  }
+
+  &.green:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* orange skin */
+  &.orange .bar,
+  &.orange .fill {
+    border-color: var(--primary-color-orange) !important;
+  }
+
+  &.orange:hover > span {
+    color: var(--primary-color-span);
+  }
+}
+.c102 {
+  position: relative;
+  font-size: 85px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  float: left;
+  margin: 0.4em;
+  background-color: #9B715D;
+
+  /* centered value inside circle */
+  > span {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 5em;
+    line-height: 5em;
+    font-size: 0.2em;
+    color: #9B715D;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s ease-out;
+  }
+
+  /* background inside the circle */
+  &:after {
+    position: absolute;
+    top: var(--circle-width);
+    left: var(--circle-width);
+    display: block;
+    content: " ";
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    transition: all 0.2s ease-in;
+  }
+
+  /* the slice (mask) */
+  .slice {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    clip: rect(0em, 1em, 1em, 0.5em);
+  }
+
+  /* circle to show the status */
+  .bar {
+    position: absolute;
+    border: var(--circle-width) solid var(--primary-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    clip: rect(0em, 0.5em, 1em, 0em);
+    border-radius: 50%;
+    transform: rotate(0deg);
+  }
+
+  /* loop to create all needed elements automatically */
+  /* This can be done with a CSS preprocessor or a script to generate the classes */
+  /* For simplicity, this example only shows the first few */
+  &.p51 .slice,
+  &.p52 .slice,
+  /* ... add more as needed ... */
+  &.p100 .slice {
+    clip: rect(auto, auto, auto, auto);
+  }
+
+  &.p51 .bar:after,
+  &.p52 .bar:after,
+  /* ... add more as needed ... */
+  &.p100 .bar:after {
+    transform: rotate(180deg);
+  }
+
+  &.p51 .fill,
+  &.p52 .fill,
+  /* ... add more as needed ... */
+  &.p100 .fill {
+    position: absolute;
+    border: var(--circle-width) solid var(--primary-color);
+    width: calc(1em - 2 * var(--circle-width));
+    height: calc(1em - 2 * var(--circle-width));
+    clip: rect(0em, 0.5em, 1em, 0em);
+    border-radius: 50%;
+    transform: rotate(180deg);
+  }
+
+  &.p1 .bar {
+    transform: rotate(calc(360 / 100 * 1));
+  }
+
+  &.p2 .bar {
+    transform: rotate(calc(360 / 100 * 2));
+  }
+
+  /* ... add more as needed ... */
+
+  &.p100 .bar {
+    transform: rotate(calc(360 / 100 * 100));
+  }
+
+  /* hover styles */
+  &:hover {
+    cursor: default;
+
+    > span {
+      width: 3.33em;
+      line-height: 3.33em;
+      font-size: 0.3em;
+      color: var(--primary-color-span);
+    }
+
+    &:after {
+      top: var(--circle-width-hover);
+      left: var(--circle-width-hover);
+      width: calc(1em - 2 * var(--circle-width-hover));
+      height: calc(1em - 2 * var(--circle-width-hover));
+    }
+  }
+
+  /* blue */
+  &.blue .bar,
+  &.blue .fill {
+    border-color: var(--primary-color-blue) !important;
+  }
+
+  &.blue:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* pink skin */
+  &.pink .bar,
+  &.pink .fill {
+    border-color: var(--primary-color-pink) !important;
+  }
+
+  &.pink:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* green skin */
+  &.green .bar,
+  &.green .fill {
+    border-color: var(--primary-color-green) !important;
+  }
+
+  &.green:hover > span {
+    color: var(--primary-color-span);
+  }
+
+  /* orange skin */
+  &.orange .bar,
+  &.orange .fill {
+    border-color: var(--primary-color-orange) !important;
+  }
+
+  &.orange:hover > span {
+    color: var(--primary-color-span);
+  }
+}
