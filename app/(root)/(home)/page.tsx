@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Dashboard | Water Reminder",
   description: "Water Reminder",
   icons: {
-    icon: "/assets/images/favicon.ico",
+    icon: "/assets/icons/waterminder-app-icon.png",
   },
 };
 

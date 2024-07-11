@@ -270,4 +270,12 @@ img#botelicon {
   border-radius: 12px;
 }
 #MUring{margin-left: 100px;}
- 
+.Sidebar-body-class nav {
+  display: none;
+}
+.Sidebar-body-class #LeftSidebar {
+  display: none;
+}
+.Sidebar-body-class #RightSidebar {
+  display: none;
+}

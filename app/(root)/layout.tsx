@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Water Reminder.",
   icons: {
-    icon: "/assets/images/favicon.ico",
+    icon: "/assets/icons/waterminder-app-icon.png",
   },
 };
 const Layout = ({ children }: { children: React.ReactNode }) => {
