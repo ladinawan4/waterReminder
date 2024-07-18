@@ -5,7 +5,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
- 
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
@@ -67,23 +66,20 @@ const MobileNav = () => {
         className="background-light900_dark200 border-none"
       >
         <Link href="/" className="flex items-center gap-1">
-        <Image
-          src="/assets/images/site-logo.png"
-          width={100}
-          id="Logosidebar"
-          height={100}
-          alt="WaterReminder"
-        />
- 
+          <Image
+            src="/assets/images/site-logo.png"
+            width={100}
+            id="Logosidebar"
+            height={100}
+            alt="WaterReminder"
+          />
         </Link>
         <div>
           <SheetClose asChild>
             <NavContent />
           </SheetClose>
 
-          <SignedOut>
-            
-          </SignedOut>
+          <SignedOut></SignedOut>
         </div>
       </SheetContent>
     </Sheet>

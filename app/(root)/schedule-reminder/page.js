@@ -1,31 +1,29 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
-import { Toaster,toast } from 'react-hot-toast';
-
-
+import { Toaster, toast } from "react-hot-toast";
 
 export default function Schedulereminder() {
   const [formData, setFormData] = useState({
-    date: '',
-    amountMl: ''
+    date: "",
+    amountMl: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch('/api/schedule', {
-      method: 'POST',
+    const res = await fetch("/api/schedule", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
@@ -33,19 +31,21 @@ export default function Schedulereminder() {
     const data = await res.json();
 
     if (data.success) {
-      toast.success('Schedule created successfully!')
-      setFormData({ date: '', amountMl: '' });
+      toast.success("Schedule created successfully!");
+      setFormData({ date: "", amountMl: "" });
     } else {
-      toast.error(`${data.error}`)
+      toast.error(`${data.error}`);
     }
   };
 
   return (
     <div>
-      <h1 className="h1-bold" id='hEading'>Schedule Reminder</h1>
+      <h1 className="h1-bold" id="hEading">
+        Schedule Reminder
+      </h1>
       <form className="max-w-sm mx-auto mt-24" onSubmit={handleSubmit}>
         <div className="mb-4">
-        <label
+          <label
             htmlFor="date"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
@@ -62,7 +62,7 @@ export default function Schedulereminder() {
           />
         </div>
         <div className="mb-4">
-        <label
+          <label
             htmlFor="amountMl"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
@@ -78,12 +78,15 @@ export default function Schedulereminder() {
             onChange={handleChange}
           />
         </div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" id="bittonsubmit" type="submit">Submit</button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          id="bittonsubmit"
+          type="submit"
+        >
+          Submit
+        </button>
       </form>
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-      />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );
 }

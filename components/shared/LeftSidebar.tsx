@@ -3,10 +3,10 @@
 import { sidebarLinks } from "@/constants";
 import React from "react";
 import { usePathname } from "next/navigation";
-import { SheetClose } from "../ui/sheet";
 import Link from "next/link";
 import Image from "next/image";
-import { SignedOut, useAuth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const { userId } = useAuth();
@@ -61,12 +61,14 @@ const LeftSidebar = () => {
           );
         })}
       </div>
+
       <div className="flex items-center bg-white p-4 rounded-lg space-x-4 sm:hidden md:hidden lg:flex">
-        <img
-          className="w-12 h-12 rounded-full"
-          src="/assets/images/Ellipse 2.png"
-          alt="User Image"
-        />
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
         <div>
           <div className="text-lg font-semibold">Mathew Perry</div>
           <div className="text-gray-500">mathewperry@xyz.com</div>
