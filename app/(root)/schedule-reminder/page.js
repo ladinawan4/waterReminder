@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-
+ 
 export default function Schedulereminder() {
+ 
   const [formData, setFormData] = useState({
     date: "",
     amountMl: "",
@@ -19,7 +20,6 @@ export default function Schedulereminder() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const res = await fetch("/api/schedule", {
       method: "POST",
       headers: {
@@ -29,12 +29,12 @@ export default function Schedulereminder() {
     });
 
     const data = await res.json();
-
+    console.log(data,'data');
     if (data.success) {
       toast.success("Schedule created successfully!");
       setFormData({ date: "", amountMl: "" });
     } else {
-      toast.error(`${data.error}`);
+      toast.error(`${data.message}`);
     }
   };
 
@@ -86,7 +86,7 @@ export default function Schedulereminder() {
           Submit
         </button>
       </form>
-      <Toaster position="bottom-center" reverseOrder={false} />
+      <Toaster />
     </div>
   );
 }

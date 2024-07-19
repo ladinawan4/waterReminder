@@ -10,6 +10,12 @@
     text-align: center;
     margin-top: 10%;
  }
+ .cl-internal-11ttlho{
+  display: none;
+ }
+ .cl-internal-180wb59{
+  display: none;
+ }
 @layer utilities {
   .background-light850_dark100 {
     @apply bg-light-850 dark:bg-dark-100;

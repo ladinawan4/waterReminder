@@ -1,18 +1,32 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-
-const items = [
-  { amount: "250 ml", time: "8:00 am" },
-  { amount: "200 ml", time: "9:30 am" },
-  { amount: "500 ml", time: "11:00 am" },
-  { amount: "200 ml", time: "1:00 pm" },
-  { amount: "250 ml", time: "3:00 pm" },
-];
+import { useAuth } from '@clerk/clerk-react';
 
 const RightSidebar = () => {
   const scrollRef = useRef(null);
+  const { getToken } = useAuth();
+  const [items, setitems] = useState([]);
+
+  const fetchData = async () => {
+    const token = await getToken(); 
+    const res = await fetch(`/api/schedule`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,  
+      },
+    });
+    const data = await res.json();
+    if (data.success) {
+      setitems(data.data);
+    } else {
+      console.error("Failed to fetch schedule:", data.error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const scrollDown = () => {
     if (scrollRef.current) {
@@ -103,10 +117,16 @@ const RightSidebar = () => {
                         className="mr-2"
                       />
                       <span className="text-blue-700 font-medium">
-                        {item.amount}
+                        {item.amountMl + " ml"}
                       </span>
                     </div>
-                    <span className="text-gray-500">{item.time}</span>
+                    <span className="text-gray-500">
+                      {new Date(item.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
                   </li>
                 ))}
               </ul>

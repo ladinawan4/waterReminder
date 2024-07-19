@@ -6,10 +6,12 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+ 
 
 const LeftSidebar = () => {
   const { userId } = useAuth();
+  const { user } = useUser();
   const pathname = usePathname();
   return (
     <section
@@ -70,14 +72,10 @@ const LeftSidebar = () => {
           <UserButton />
         </SignedIn>
         <div>
-          <div className="text-lg font-semibold">Mathew Perry</div>
-          <div className="text-gray-500">mathewperry@xyz.com</div>
+          <div className="text-lg font-semibold">{user?.firstName} {user?.lastName}</div>
+          <div className="text-gray-500">{user?.primaryEmailAddress?.emailAddress}</div>
         </div>
-        <div className="ml-auto text-gray-400 cursor-pointer">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 8c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm0 6c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm0-12c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z" />
-          </svg>
-        </div>
+      
       </div>
     </section>
   );
