@@ -29,7 +29,7 @@ export default function Schedulereminder() {
     });
 
     const data = await res.json();
-    console.log(data,'data');
+   
     if (data.success) {
       toast.success("Schedule created successfully!");
       setFormData({ date: "", amountMl: "" });

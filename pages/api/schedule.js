@@ -21,12 +21,10 @@ export default async function handler(req, res) {
             const { page = 1, limit = 10 } = req.query;
             const skip = (page - 1) * limit;
     
-            // Fetch all documents to calculate the total amountMl and group by day
-            const allSchedules = await Schedule.find({});
+             const allSchedules = await Schedule.find({});
             const totalAmountMl = allSchedules.reduce((total, item) => total + item.amountMl, 0);
     
-            // Group by day and calculate daily totals
-            const dailyIntake = {};
+             const dailyIntake = {};
             allSchedules.forEach(item => {
                 const date = new Date(item.date).toLocaleDateString("en-US", {
                     year: "numeric",

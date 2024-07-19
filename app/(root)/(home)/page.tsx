@@ -9,6 +9,11 @@ import "../../../styles/styles.scss";
 const Home = () => {
   const [runningTotal, setRunningTotal] = useState(0);
   const [averageIntake, setAverageIntake] = useState(0);
+  const [DailyIntake, setDailyIntake] = useState(0);
+  const [temperature, setTemperature] = useState(null);
+  const [Description, setDesc] = useState(null);
+  const [City, setCity] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const { getToken } = useAuth();
   const fetchData = async () => {
@@ -22,6 +27,7 @@ const Home = () => {
     if (data.success) {
       setRunningTotal(data.totalAmountMl);
       setAverageIntake(data.averageDailyIntake);
+      setDailyIntake(data.total);
     } else {
       console.error("Failed to fetch schedule:", data.error);
     }
@@ -30,6 +36,30 @@ const Home = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    async function fetchWeather() {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/weather');
+        const data = await response.json();
+        if (data.error) {
+           
+        } else {
+          setDesc(data.weather[0].description)
+          setTemperature(data.main.temp);
+          setCity(data.name);
+          setLoading(false);
+        }
+      } catch (err) {
+        setLoading(false);
+      }
+    }
+    fetchWeather();
+  }, []);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <div>
@@ -43,14 +73,14 @@ const Home = () => {
               alt="sunicon"
             />
             <h5 className="ml-2">
-              <b>26°C</b>
+              <b>{temperature}°C</b>
             </h5>
           </div>
           <div className="text-center col-span-2 border-right-8f8e8e57">
-            It’s a <b>Sunny Day</b> today!
+            It’s a <b>{Description}</b> today!
           </div>
           <div className="text-center col-span-2 text-8E8F8F">
-            <p>Don’t forget to take your water bottle with you.</p>
+            <p>{City}.</p>
           </div>
         </div>
         <div className="mx-auto bg-white rounded-lg mt-4">
@@ -64,7 +94,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="text-xl mt-12 text-green-600">Daily Intake</div>
-              <div className="text-xl text-green-600 font-bold">5000 ml</div>
+              <div className="text-xl text-green-600 font-bold">{DailyIntake} ml</div>
             </div>
             <div className="bg-purple-100 p-4 rounded-lg text-center">
               <div className="c101 p90 blue text-green-600">
