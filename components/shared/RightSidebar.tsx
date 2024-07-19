@@ -8,7 +8,8 @@ const RightSidebar = () => {
   const scrollRef = useRef(null);
   const { getToken } = useAuth();
   const [items, setitems] = useState([]);
-
+  const [runningTotal, setRunningTotal] = useState(0);
+ 
   const fetchData = async () => {
     const token = await getToken(); 
     const res = await fetch(`/api/schedule`, {
@@ -27,7 +28,14 @@ const RightSidebar = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
+  useEffect(() => {
+    
+    let total = 0;
+    items.forEach(item => {
+      total += item.amountMl;
+    });
+    setRunningTotal(total);
+  }, [items]);
   const scrollDown = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({

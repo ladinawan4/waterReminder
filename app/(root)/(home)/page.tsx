@@ -1,15 +1,35 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useAuth } from '@clerk/clerk-react';
 import Image from "next/image";
 import "../../../styles/styles.scss";
-export const metadata: Metadata = {
-  title: "Dashboard | Water Reminder",
-  description: "Water Reminder",
-  icons: {
-    icon: "/assets/icons/waterminder-app-icon.png",
-  },
-};
+ 
 
-export default async function Home() {
+const Home = () => {
+  const [runningTotal, setRunningTotal] = useState(0);
+  const [averageIntake, setAverageIntake] = useState(0);
+
+  const { getToken } = useAuth();
+  const fetchData = async () => {
+    const token = await getToken(); 
+    const res = await fetch(`/api/schedule`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,  
+      },
+    });
+    const data = await res.json();
+    if (data.success) {
+      setRunningTotal(data.totalAmountMl);
+      setAverageIntake(data.averageDailyIntake);
+    } else {
+      console.error("Failed to fetch schedule:", data.error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <div>
@@ -55,7 +75,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="text-xl mt-12 text-purple-600">Average Intake</div>
-              <div className="text-xl text-purple-600 font-bold">2500 ml</div>
+              <div className="text-xl text-purple-600 font-bold"> {averageIntake.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              ml</div>
             </div>
             <div className="bg-orange-100 p-4 rounded-lg text-center">
               <div className="c102 p90 blue text-green-600">
@@ -66,7 +87,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="text-xl mt-12 text-orange-600">Total Intake</div>
-              <div className="text-xl text-orange-600 font-bold">17000 ml</div>
+              <div className="text-xl text-orange-600 font-bold">{runningTotal} ml</div>
             </div>
           </div>
         </div>
@@ -141,3 +162,4 @@ export default async function Home() {
     </>
   );
 }
+export default Home;

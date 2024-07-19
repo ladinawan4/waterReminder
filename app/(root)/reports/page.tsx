@@ -2,8 +2,11 @@
 
 import { Toaster, toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from 'next/navigation';
 
 export default function Reports() {
+  const router = useRouter();
   const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -12,23 +15,40 @@ export default function Reports() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 10;
-
+  const { isLoaded, userId, getToken } = useAuth(); 
+ 
   const fetchData = async (page) => {
+    if (!isLoaded || !userId) return; 
+
     setLoading(true);
-    const res = await fetch(`/api/schedule?page=${page}&limit=${limit}`);
-    const data = await res.json();
-    if (data.success) {
-      setData(data.data);
-      setTotal(data.total);
-    } else {
-      console.error("Failed to fetch schedule:", data.error);
+    try {
+      const token = await getToken();  
+      const res = await fetch(`/api/schedule?page=${page}&limit=${limit}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,  
+        },
+      });
+      const result = await res.json();
+      if (result.success) {
+        setData(result.data);
+        setTotal(result.total);
+      } else {
+        console.error("Failed to fetch schedule:", result.error);
+        toast.error("Failed to fetch schedule.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("An error occurred while fetching data.");
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchData(page);
-  }, [page]);
+    if (isLoaded && userId) {
+      fetchData(page);
+    }
+  }, [page, isLoaded, userId]);
+ 
   const handleEdit = (id) => {
     setActionType("edit");
     setConfirmAction(id);
@@ -40,6 +60,7 @@ export default function Reports() {
   const confirmActionHandler = async () => {
     if (actionType === "edit") {
       console.log(confirmAction, "edit");
+      router.push(`/schedule-reminder/${confirmAction}`); 
     } else if (actionType === "delete") {
       setIsDeleting(true);
 
@@ -52,7 +73,7 @@ export default function Reports() {
           const errorData = await response.json();
           throw new Error(errorData.message);
         }
-        if (response.status === 200) {
+        if (response.ok) {
           toast.success("Record deleted successfully");
         }
         setTimeout(() => {
@@ -74,7 +95,6 @@ export default function Reports() {
     return <p>Loading...</p>;
   }
   const totalPages = Math.ceil(total / limit);
-
   return (
     <div>
       <h1 className="h1-bold" id="hEading">
