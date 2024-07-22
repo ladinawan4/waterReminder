@@ -20,10 +20,13 @@ export default function Schedulereminder() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('authToken');
+
     const res = await fetch("/api/schedule", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`,  
       },
       body: JSON.stringify(formData),
     });

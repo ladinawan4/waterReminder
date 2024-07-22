@@ -1,23 +1,24 @@
 "use client";
 
 
-import { useEffect } from 'react';
-import Image from "next/image";
+ import Image from "next/image";
 import Link from "next/link";
 import GlobalSearch from "../search/GlobalSearch";
 import MobileNav from "./MobileNav";
-import { useAuth } from '@clerk/clerk-react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+
 const Navbar = () => {
-  const { isSignedIn } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isSignedIn) {
-      router.push('/sign-in');  
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      router.push('/login');
     }
-  }, [isSignedIn, router]);
+  }, [router]);
+ 
 
   return (
     <nav className="flex-between background-light900_dark200 fixed z-50 w-full gap-5 p-6 shadow-light-300 dark:shadow-none sm:px-12">

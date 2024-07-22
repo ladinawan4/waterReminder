@@ -2,16 +2,14 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { useAuth } from '@clerk/clerk-react';
-
+ 
 const RightSidebar = () => {
   const scrollRef = useRef(null);
-  const { getToken } = useAuth();
-  const [items, setitems] = useState([]);
+   const [items, setitems] = useState([]);
   const [runningTotal, setRunningTotal] = useState(0);
  
   const fetchData = async () => {
-    const token = await getToken(); 
+    const token = localStorage.getItem('authToken');
     const res = await fetch(`/api/schedule`, {
       headers: {
         'Authorization': `Bearer ${token}`,  

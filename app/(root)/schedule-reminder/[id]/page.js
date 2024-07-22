@@ -26,7 +26,13 @@ function Page({ params }) {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(`/api/schedules/${id}`);
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(`/api/schedules/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,  
+          }
+      });
         const data = await response.json();
         if (data.success) {
           setSchedule(data.data);
@@ -56,10 +62,12 @@ function Page({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`/api/schedules/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,  
         },
         body: JSON.stringify(formData),
       });

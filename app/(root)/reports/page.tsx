@@ -2,7 +2,6 @@
 
 import { Toaster, toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 
 export default function Reports() {
@@ -15,14 +14,12 @@ export default function Reports() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 10;
-  const { isLoaded, userId, getToken } = useAuth(); 
- 
+  
   const fetchData = async (page) => {
-    if (!isLoaded || !userId) return; 
-
+ 
     setLoading(true);
     try {
-      const token = await getToken();  
+      const token = localStorage.getItem('authToken');
       const res = await fetch(`/api/schedule?page=${page}&limit=${limit}`, {
         headers: {
           Authorization: `Bearer ${token}`,  
@@ -32,6 +29,7 @@ export default function Reports() {
       if (result.success) {
         setData(result.data);
         setTotal(result.total);
+        setLoading(false);
       } else {
         console.error("Failed to fetch schedule:", result.error);
         toast.error("Failed to fetch schedule.");
@@ -44,10 +42,10 @@ export default function Reports() {
   };
 
   useEffect(() => {
-    if (isLoaded && userId) {
+   
       fetchData(page);
-    }
-  }, [page, isLoaded, userId]);
+    
+  }, [page]);
  
   const handleEdit = (id) => {
     setActionType("edit");
@@ -65,9 +63,15 @@ export default function Reports() {
       setIsDeleting(true);
 
       try {
+        const token = localStorage.getItem('authToken');
         const response = await fetch(`/api/schedules/${confirmAction}`, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+          }
         });
+    
 
         if (!response.ok) {
           const errorData = await response.json();

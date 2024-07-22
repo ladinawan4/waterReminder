@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from '@clerk/clerk-react';
-import Image from "next/image";
+ import Image from "next/image";
 import "../../../styles/styles.scss";
  
 
@@ -15,9 +14,9 @@ const Home = () => {
   const [City, setCity] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { getToken } = useAuth();
+ 
   const fetchData = async () => {
-    const token = await getToken(); 
+    const token = localStorage.getItem('authToken');
     const res = await fetch(`/api/schedule`, {
       headers: {
         'Authorization': `Bearer ${token}`,  

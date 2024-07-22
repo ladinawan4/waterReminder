@@ -6,12 +6,18 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
-import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
- 
+ import { useRouter } from 'next/navigation';
+
 
 const LeftSidebar = () => {
   const { userId } = useAuth();
-  const { user } = useUser();
+  const router = useRouter();
+
+  const handleLogout = () => {
+     localStorage.removeItem('authToken');
+    
+     router.push('/signin');
+  };
   const pathname = usePathname();
   return (
     <section
@@ -63,20 +69,14 @@ const LeftSidebar = () => {
           );
         })}
       </div>
-
-      <div className="flex items-center bg-white p-4 rounded-lg space-x-4 sm:hidden md:hidden lg:flex">
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        <div>
-          <div className="text-lg font-semibold">{user?.firstName} {user?.lastName}</div>
-          <div className="text-gray-500">{user?.primaryEmailAddress?.emailAddress}</div>
+      <div className="hidden lg:flex flex-col items-center bg-white p-4 rounded-lg space-y-4">
+      <button 
+        onClick={handleLogout} 
+        className="text-gray-700 hover:text-white hover:bg-slate-400 px-4 py-2 rounded transition-colors duration-300"
+      >
+        Logout
+      </button>     
         </div>
-      
-      </div>
     </section>
   );
 };
