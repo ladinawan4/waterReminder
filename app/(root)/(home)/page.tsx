@@ -61,7 +61,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <div className="pt-36">
         <div className="grid lg:grid-cols-5 md:grid-cols-5  sm:grid-cols-1 gap-3 bg-f7f9fd rounded-lg p-8 items-center">
           <div className="flex items-center">
             <Image

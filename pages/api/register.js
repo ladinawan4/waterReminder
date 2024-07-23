@@ -1,11 +1,11 @@
 import dbConnect from '../../lib/config/dbConnect';
 import User from '../../lib/models/User';
- 
+
 export default async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'POST') {
-    const { username, email, password } = req.body;
+    const { username, email, password, weight, weightUnit, age, gender, activityLevel, climate } = req.body;
 
     if (!username || !email || !password) {
       return res.status(400).json({
@@ -15,10 +15,24 @@ export default async function handler(req, res) {
     }
 
     try {
-        const newUser = await User.create({ 
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'User already exists'
+        });
+      }
+
+      const newUser = await User.create({ 
         username, 
         email, 
-        password,  
+        password,
+        weight,
+        weightUnit,
+        age,
+        gender,
+        activityLevel,
+        climate,
       });
 
       return res.status(201).json({

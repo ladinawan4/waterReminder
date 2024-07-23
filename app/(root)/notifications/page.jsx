@@ -9,7 +9,7 @@ export const metadata = {
 const Notifications = () => {
   return (
     <>
-      <div>
+      <div className="pt-36">
         <h1 className="h1-bold">notifications.</h1>
       </div>
     </>

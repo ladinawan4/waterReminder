@@ -29,8 +29,9 @@ export function SigninForm() {
       console.log(res,'res111');
       if (res.data.success) {
          localStorage.setItem('authToken', res.data.token);
+         localStorage.setItem('userId', res.data.userId);
         toast.success('Login successful');
-         router.push(`/`);
+         router.push(`/profile`);
        } else {
         toast.error(res.message);
        }

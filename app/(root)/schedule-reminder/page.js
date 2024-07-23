@@ -42,7 +42,7 @@ export default function Schedulereminder() {
   };
 
   return (
-    <div>
+    <div className="pt-36">
       <h1 className="h1-bold" id="hEading">
         Schedule Reminder
       </h1>

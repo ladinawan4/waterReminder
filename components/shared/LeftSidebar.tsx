@@ -5,16 +5,17 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@clerk/nextjs";
- import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 
 const LeftSidebar = () => {
-  const { userId } = useAuth();
-  const router = useRouter();
+   const router = useRouter();
+   const userId = localStorage.getItem('userId');
 
   const handleLogout = () => {
      localStorage.removeItem('authToken');
+     localStorage.removeItem('waterIntake');
+     localStorage.removeItem('userId');
     
      router.push('/signin');
   };

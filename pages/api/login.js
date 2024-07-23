@@ -40,7 +40,10 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: true,
         message: 'Login successful',
-        token
+        token,  
+        userId: user._id, 
+        name: user.name
+        
       });
     } catch (error) {
       return res.status(500).json({

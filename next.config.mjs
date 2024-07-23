@@ -1,11 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-     experimental: {
-      serverActions: true,
-      mdxRs: true,
+  experimental: {
+    serverActions: true,
+    mdxRs: true,
+  },
+  serverComponentsExternalPackages: ['mongoose'],
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',  
     },
-     serverComponentsExternalPackages: ['mongoose'],  
-  };
-  
-  export default nextConfig;
-  
+  },
+};
+
+export default nextConfig;

@@ -25,15 +25,16 @@ export const sidebarLinks = [
     label: "Notifications",
   },
   {
+    imgURL: "/assets/images/pie-chart.png",
+    route: "/profile",
+    label: "Profile",
+  },
+  {
     imgURL: "/assets/images/settings.png",
     route: "/settings",
     label: "Settings",
   },
-  // {
-  //   imgURL: "/assets/icons/question.svg",
-  //   route: "/ask-question",
-  //   label: "Ask a question",
-  // },
+  
 ];
 export const BADGE_CRITERIA = {
   QUESTION_COUNT: {

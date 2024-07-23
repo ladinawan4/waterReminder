@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function Settings() {
   return (
-    <div>
+    <div className="pt-36">
       <h1 className="h1-bold">Settings.</h1>
       </div>
   );
