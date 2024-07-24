@@ -15,7 +15,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
-      router.push('/login');
+      router.push('/signin');
     }
   }, [router]);
  

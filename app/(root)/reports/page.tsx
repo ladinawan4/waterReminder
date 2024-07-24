@@ -2,11 +2,12 @@
 
 import { Toaster, toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export default function Reports() {
   const router = useRouter();
   const [Data, setData] = useState([]);
+  const [dailyGoalMl, setdailyGoal] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null);
@@ -14,15 +15,14 @@ export default function Reports() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 10;
-  
+
   const fetchData = async (page) => {
- 
     setLoading(true);
     try {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       const res = await fetch(`/api/schedule?page=${page}&limit=${limit}`, {
         headers: {
-          Authorization: `Bearer ${token}`,  
+          Authorization: `Bearer ${token}`,
         },
       });
       const result = await res.json();
@@ -42,11 +42,12 @@ export default function Reports() {
   };
 
   useEffect(() => {
-   
-      fetchData(page);
-    
+    fetchData(page);
   }, [page]);
- 
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("waterIntake")) || [];
+    setdailyGoal(storedData);
+  }, []);
   const handleEdit = (id) => {
     setActionType("edit");
     setConfirmAction(id);
@@ -58,20 +59,19 @@ export default function Reports() {
   const confirmActionHandler = async () => {
     if (actionType === "edit") {
       console.log(confirmAction, "edit");
-      router.push(`/schedule-reminder/${confirmAction}`); 
+      router.push(`/schedule-reminder/${confirmAction}`);
     } else if (actionType === "delete") {
       setIsDeleting(true);
 
       try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem("authToken");
         const response = await fetch(`/api/schedules/${confirmAction}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`,
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-    
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -95,6 +95,12 @@ export default function Reports() {
   const cancelActionHandler = () => {
     setConfirmAction(null);
   };
+  const calculateLiter = (amountMl) => amountMl / 1000;
+  const calculatePercentage = (amountMl) => {
+    const liter = calculateLiter(amountMl);
+    return (liter / dailyGoalMl) * 100;
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -119,6 +125,12 @@ export default function Reports() {
                 Water Amount Ml
               </th>
               <th scope="col" className="px-6 py-3">
+                Daily Goal Compeleted
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Progress Tracking
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Action
               </th>
             </tr>
@@ -126,8 +138,8 @@ export default function Reports() {
           <tbody>
             {Data.map((item, index) => (
               <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={item._id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
               >
                 <th
                   scope="row"
@@ -135,26 +147,75 @@ export default function Reports() {
                 >
                   {index + 1 + (page - 1) * limit}
                 </th>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
+                <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
                   {new Date(item.date).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
-                </th>
-                <td className="px-6 py-4">{item.amountMl + " ml"}</td>
-                <td className="flex items-center px-6 py-4">
+                </td>
+                <td className="px-6 py-4 text-gray-900 dark:text-gray-100">
+                  <div className="flex flex-col space-y-2">
+                      <div className="flex items-center justify-between bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-md dark:bg-green-800 dark:text-green-300">
+                        <span className="font-medium">Daily Goal:</span>
+                        <span className="font-semibold">{dailyGoalMl} L</span>
+                      </div>
+                      <div className="flex items-center justify-between bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-md dark:bg-blue-800 dark:text-blue-300">
+                        <span className="font-medium">Consumed:</span>
+                        <span className="font-semibold">{item.amountMl} ml</span>
+                      </div>
+                      <div className="flex items-center justify-between bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg shadow-md dark:bg-yellow-800 dark:text-yellow-300">
+                        <span className="font-medium">Remaining:</span>
+                        <span className="font-semibold">
+                          {Math.max((dailyGoalMl * 1000 - item.amountMl) / 1000, 0)} L
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                <td className="px-6 py-4 text-gray-900 dark:text-gray-100">
+                  {calculatePercentage(item.amountMl).toFixed(2)} %
+                </td>
+                <td className="px-6 py-4">
+                  <div className="relative pt-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                        Progress
+                      </span>
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                        {calculatePercentage(item.amountMl).toFixed(2)}%
+                      </span>
+                    </div>
+                    <div className="relative w-full h-2 bg-gray-200 rounded-lg dark:bg-gray-700">
+                      <div
+                        className={`h-full rounded-lg transition-all duration-500 ease-in-out ${
+                          calculatePercentage(item.amountMl) >= 100
+                            ? "bg-gradient-to-r from-green-400 to-green-600"
+                            : "bg-blue-500"
+                        }`}
+                        style={{
+                          width: `${calculatePercentage(item.amountMl).toFixed(
+                            2
+                          )}%`,
+                        }}
+                      >
+                        {calculatePercentage(item.amountMl) >= 100 && (
+                          <span className="absolute right-0 top-1/2 transform -translate-y-1/2 text-xs font-semibold text-white px-2 bg-green-700 rounded-r-lg">
+                            Complete
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
                   <button
-                    className="text-blue-600 hover:underline dark:text-blue-500"
+                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 mr-2 dark:hover:text-blue-300 transition duration-200"
                     onClick={() => handleEdit(item._id)}
                   >
                     Edit
                   </button>
                   <button
-                    className="text-red-600 hover:underline ml-4 dark:text-blue-500"
+                    className="text-red-600 hover:text-red-800 dark:text-red-400 ml-2 dark:hover:text-red-300 transition duration-200"
                     data-modal-target="popup-modal"
                     data-modal-toggle="popup-modal"
                     onClick={() => handleDelete(item._id)}

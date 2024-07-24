@@ -25,13 +25,13 @@ export function SigninForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const userId = localStorage.getItem('userId');
       const res = await axios.post('/api/login', { email, password });
-      console.log(res,'res111');
       if (res.data.success) {
          localStorage.setItem('authToken', res.data.token);
          localStorage.setItem('userId', res.data.userId);
         toast.success('Login successful');
-         router.push(`/profile`);
+         router.push(`/profile/${res.data.userId}`);
        } else {
         toast.error(res.message);
        }
