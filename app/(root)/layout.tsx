@@ -1,9 +1,12 @@
+
+
 import Navbar from "@/components/shared/navbar/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import RightSidebar from "@/components/shared/RightSidebar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import type { Metadata } from "next";
+
 
 export const metadata: Metadata = {
   title: "Water Reminder",

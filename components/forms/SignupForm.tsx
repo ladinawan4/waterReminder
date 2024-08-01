@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { register } from '../../utils/auth';
 import { Input } from "@/components/ui/input";
 import { Toaster, toast } from "react-hot-toast";
 
@@ -14,28 +15,14 @@ export function SignupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success('Registration successful!');
-      } else {
-        toast.error(data.message || 'Registration failed');
-      }
+      const data = await register(username, email, password);
+      toast.success('Registration successful!');
     } catch (error) {
-      toast.error('An error occurred');
+      toast.error(error.message || 'An error occurred');
     }
   };
-
   return (
     <div className="w-full max-w-md">
       <form onSubmit={handleSubmit}>

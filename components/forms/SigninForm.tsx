@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import axios from 'axios';
+import { login } from '../../utils/auth';
 import { useRouter } from 'next/navigation';
 import {
   CardTitle,
@@ -25,20 +25,19 @@ export function SigninForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userId = localStorage.getItem('userId');
-      const res = await axios.post('/api/login', { email, password });
-      if (res.data.success) {
-         localStorage.setItem('authToken', res.data.token);
-         localStorage.setItem('userId', res.data.userId);
+      const res = await login(email, password);
+      if (res.success) {
+        localStorage.setItem('authToken', res.token);
+        localStorage.setItem('userId', res.userId);
         toast.success('Login successful');
-         router.push(`/profile/${res.data.userId}`);
-       } else {
+        router.push(`/profile/${res.userId}`);
+      } else {
         toast.error(res.message);
-       }
+      }
     } catch (error) {
-      console.log(error,'res111');
-      toast.error(error.response.data.message);
-     }
+      console.error(error, 'res111');
+      toast.error(error.response?.data?.message || 'An error occurred');
+    }
   };
  
 

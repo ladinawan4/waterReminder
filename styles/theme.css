@@ -214,6 +214,13 @@ img#Logosidebar {
 .bg-FFF2EC-100{
   background-color:#FFF2EC;
 }
+#msrGin{
+  margin-top: 85px;
+}
+button.background-blue-600 {
+  background: #1573ff;
+  margin-top: 30px;
+}
 button#bittonsubmit {
   background: #3629b7;
   color: white;

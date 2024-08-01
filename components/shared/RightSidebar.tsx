@@ -108,34 +108,39 @@ const RightSidebar = () => {
                 ref={scrollRef}
                 className="overflow-y-auto h-48 custom-scrollbar"
               >
-                {items.map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between items-center mb-3"
-                    id="border-stylyes"
-                  >
-                    <div className="flex items-center">
-                      <Image
-                        src="/assets/images/Vector (1).png"
-                        alt="sunicon"
-                        width={12}
-                        height={12}
-                        className="mr-2"
-                      />
-                      <span className="text-blue-700 font-medium">
-                        {item.amountMl + " ml"}
+                {items.length > 0 ? (
+                  items.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between items-center mb-3"
+                      id="border-stylyes"
+                    >
+                      <div className="flex items-center">
+                        <Image
+                          src="/assets/images/Vector (1).png"
+                          alt="sunicon"
+                          width={12}
+                          height={12}
+                          className="mr-2"
+                        />
+                        <span className="text-blue-700 font-medium">
+                          {item.amountMl + " ml"}
+                        </span>
+                      </div>
+                      <span className="text-gray-500">
+                        {new Date(item.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </span>
-                    </div>
-                    <span className="text-gray-500">
-                      {new Date(item.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                  </li>
-                ))}
+                    </li>
+                  ))
+                ) : (
+                  <div className="text-center text-gray-500">Not found</div>
+                )}
               </ul>
+              {items.length > 3 ? (
               <button
                 onClick={scrollDown}
                 className="absolute bottom-0 transform translate-y-1/2  text-gray font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
@@ -156,6 +161,9 @@ const RightSidebar = () => {
                   ></path>
                 </svg>
               </button>
+               ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

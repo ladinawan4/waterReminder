@@ -136,7 +136,14 @@ export default function Reports() {
             </tr>
           </thead>
           <tbody>
-            {Data.map((item, index) => (
+          {Data.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                No data found
+              </td>
+            </tr>
+          ) : (
+            Data.map((item, index) => (
               <tr
                 key={item._id}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
@@ -158,16 +165,16 @@ export default function Reports() {
                   <div className="flex flex-col space-y-2">
                       <div className="flex items-center justify-between bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-md dark:bg-green-800 dark:text-green-300">
                         <span className="font-medium">Daily Goal:</span>
-                        <span className="font-semibold">{dailyGoalMl} L</span>
+                        <span className="font-semibold">{dailyGoalMl.toFixed(2)} L</span>
                       </div>
                       <div className="flex items-center justify-between bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-md dark:bg-blue-800 dark:text-blue-300">
                         <span className="font-medium">Consumed:</span>
-                        <span className="font-semibold">{item.amountMl} ml</span>
+                        <span className="font-semibold">{item.amountMl.toFixed(2)} ml</span>
                       </div>
                       <div className="flex items-center justify-between bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg shadow-md dark:bg-yellow-800 dark:text-yellow-300">
                         <span className="font-medium">Remaining:</span>
                         <span className="font-semibold">
-                          {Math.max((dailyGoalMl * 1000 - item.amountMl) / 1000, 0)} L
+                        {Math.max((dailyGoalMl * 1000 - item.amountMl) / 1000, 0).toFixed(2)} L
                         </span>
                       </div>
                     </div>
@@ -224,7 +231,9 @@ export default function Reports() {
                   </button>
                 </td>
               </tr>
-            ))}
+            )
+          )
+        )}
           </tbody>
         </table>
       </div>

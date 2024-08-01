@@ -29,14 +29,14 @@ export default async function handler(req, res) {
         data: user
       });
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to retrieve user',
         error: error.message
       });
     }
   } else if (req.method === 'PUT') {
-    const { userId, username, email, password, weight, weightUnit, age, gender, activityLevel, climate } = req.body;
+    const { userId, username, email, password, weight, weightUnit, age, gender, activityLevel, climate, result } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     try {
       const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { username, email, password, weight, weightUnit, age, gender, activityLevel, climate },
+        { username, email, password, weight, weightUnit, age, gender, activityLevel, climate, result },
         { new: true, runValidators: true }
       );
 
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
         data: updatedUser
       });
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to update user',
         error: error.message

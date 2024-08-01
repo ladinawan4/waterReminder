@@ -13,6 +13,7 @@ async function migrate() {
         gender: null,
         activityLevel: null,
         climate: null,
+        result: null,
       }
     });
     console.log('Migration completed successfully.');
